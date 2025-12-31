@@ -1,0 +1,2 @@
+class Denomination < ApplicationRecord
+end
