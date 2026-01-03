@@ -1,0 +1,72 @@
+<div data-controller="billing">
+
+  <%= form_with url: bills_path,
+                method: :post,
+                local: true,
+                data: { billing_target: "form" } do %>
+
+    <!-- ================= CUSTOMER ================= -->
+    <label>Email</label>
+    <input type="email"
+           name="bill[email]"
+           required>
+
+    <hr>
+
+    <!-- ================= PRODUCTS ================= -->
+    <h3>Products</h3>
+
+    <div data-billing-target="products">
+      <% 3.times do %>
+        <%= render "product_row", products: @products %>
+      <% end %>
+    </div>
+
+    <button type="button"
+            data-action="billing#addProduct">
+      ➕ Add Product
+    </button>
+
+    <hr>
+
+    <!-- ================= BILL SUMMARY ================= -->
+    <h3>Bill Summary</h3>
+
+    <p>Subtotal: ₹ <span data-billing-target="subtotal">0</span></p>
+    <p>Tax: ₹ <span data-billing-target="tax">0</span></p>
+    <p><strong>Total: ₹ <span data-billing-target="total">0</span></strong></p>
+
+    <hr>
+
+    <!-- ================= DENOMINATIONS ================= -->
+    <h3>Denominations</h3>
+
+    <% @denominations.order(value: :desc).each do |d| %>
+      ₹<%= d.value %>
+      <input type="number"
+             name="bill[denominations][<%= d.value %>]"
+             value="0"
+             min="0"><br>
+    <% end %>
+
+    <hr>
+
+    <!-- ================= PAYMENT ================= -->
+    <label>Paid Amount</label>
+    <input type="number"
+           name="bill[paid_amount]"
+           min="0"
+           required>
+
+    <br><br>
+
+    <button type="submit">Generate Bill</button>
+
+  <% end %>
+
+  <!-- ================= TEMPLATE (INSIDE CONTROLLER) ================= -->
+  <template data-billing-target="template">
+    <%= render "product_row", products: @products %>
+  </template>
+
+</div>

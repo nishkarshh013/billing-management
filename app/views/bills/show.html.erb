@@ -1,0 +1,130 @@
+<h3>Previous Purchases</h3>
+  <ul data-billing-target="previous">
+</ul>
+
+<h2>Bill Details</h2>
+
+<hr>
+
+<!-- BILL HEADER -->
+<p><strong>Bill No:</strong> <%= @bill.id %></p>
+<p><strong>Date:</strong> <%= @bill.created_at.strftime("%d %b %Y, %I:%M %p") %></p>
+<p><strong>Customer Email:</strong> <%= @bill.customer.email %></p>
+
+<hr>
+
+<!-- PRODUCTS TABLE -->
+<h3>Purchased Items</h3>
+
+<table border="1" cellpadding="8" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>Product ID</th>
+      <th>Unit Price (₹)</th>
+      <th>Quantity</th>
+      <th>Purchase Price (₹)</th>
+      <th>Tax %</th>
+      <th>Tax Payable (₹)</th>
+      <th>Total Price (₹)</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bill.bill_items.each do |item| %>
+      <% purchase_price = item.unit_price * item.quantity %>
+      <tr>
+        <td><%= item.product.product_code %></td>
+        <td><%= number_to_currency(item.unit_price, unit: "", precision: 2) %></td>
+        <td><%= item.quantity %></td>
+        <td><%= number_to_currency(purchase_price, unit: "", precision: 2) %></td>
+        <td><%= item.tax_percentage %>%</td>
+        <td><%= number_to_currency(item.tax_amount, unit: "", precision: 2) %></td>
+        <td><%= number_to_currency(item.total_price, unit: "", precision: 2) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<hr>
+
+<!-- BILL SUMMARY -->
+<h3>Bill Summary</h3>
+
+<table width="45%" cellpadding="6">
+  <tr>
+    <td>Total Price (Without Tax)</td>
+    <td align="right">₹ <%= number_to_currency(@bill.total_without_tax, unit: "", precision: 2) %></td>
+  </tr>
+
+  <tr>
+    <td>Total Tax Payable</td>
+    <td align="right">₹ <%= number_to_currency(@bill.total_tax, unit: "", precision: 2) %></td>
+  </tr>
+
+  <tr>
+    <td><strong>Net Price</strong></td>
+    <td align="right"><strong>₹ <%= number_to_currency(@bill.net_amount, unit: "", precision: 2) %></strong></td>
+  </tr>
+
+  <tr>
+    <td>Rounded Net Price</td>
+    <td align="right">₹ <%= number_to_currency(@bill.rounded_amount, unit: "", precision: 2) %></td>
+  </tr>
+
+  <tr>
+    <td>Paid Amount</td>
+    <td align="right">₹ <%= number_to_currency(@bill.paid_amount, unit: "", precision: 2) %></td>
+  </tr>
+
+  <tr>
+    <td><strong>Balance Payable to Customer</strong></td>
+    <td align="right"><strong>₹ <%= number_to_currency(@bill.balance_amount, unit: "", precision: 2) %></strong></td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- BALANCE DENOMINATIONS -->
+<h3>Balance Denomination (Change Given)</h3>
+
+<% if @bill.bill_denominations.any? %>
+  <table border="1" cellpadding="6" cellspacing="0" width="45%">
+    <thead>
+      <tr>
+        <th>Denomination (₹)</th>
+        <th>Count</th>
+        <th>Total (₹)</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @bill.bill_denominations.each do |bd| %>
+        <tr>
+          <td><%= bd.denomination.value %></td>
+          <td><%= bd.count %></td>
+          <td>₹ <%= bd.denomination.value * bd.count %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No denomination could be used to return balance.</p>
+<% end %>
+
+<!-- REMAINING BALANCE -->
+<% returned_amount =
+     @bill.bill_denominations.sum { |bd| bd.denomination.value * bd.count } %>
+
+<% remaining_balance = @bill.balance_amount - returned_amount %>
+
+<% if remaining_balance > 0 %>
+  <p style="color: #b30000; margin-top: 12px;">
+    ⚠ <strong>Note:</strong>
+    ₹ <%= number_to_currency(remaining_balance, unit: "", precision: 2) %>
+    could not be returned due to unavailability of exact denominations.
+  </p>
+<% end %>
+
+<hr>
+
+<%= link_to "Back to Bills", root_path %>

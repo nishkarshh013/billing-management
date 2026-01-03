@@ -1,0 +1,22 @@
+<div class="product-row">
+  <select name="bill[products][][product_code]"
+          data-action="change->billing#preview">
+    <option value="">Select product</option>
+    <% products.each do |product| %>
+      <option value="<%= product.product_code %>">
+        <%= product.name %>
+      </option>
+    <% end %>
+  </select>
+
+  <input type="number"
+         name="bill[products][][quantity]"
+         value="1"
+         min="1"
+         data-action="input->billing#preview">
+
+  <button type="button"
+          data-action="billing#removeProduct">
+    ❌
+  </button>
+</div>
