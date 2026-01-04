@@ -140,7 +140,7 @@ RSpec.describe "BillsController", type: :request do
 
       expect(json["total_without_tax"].to_f).to eq(50_000.0)
       expect(json["total_tax"].to_f).to eq(9_000.0)
-      expect(json["net_amount"].to_f).to eq(59_000.0)      
+      expect(json["net_amount"].to_f).to eq(59_000.0)
     end
   end
 

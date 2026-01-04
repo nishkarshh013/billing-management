@@ -2,8 +2,8 @@ class BillMailer < ApplicationMailer
   def invoice(bill_id)
      @bill = Bill.includes(
         :customer,
-        :bill_items => :product,
-        :bill_denominations => :denomination
+        bill_items: :product,
+        bill_denominations: :denomination
       ).find(bill_id)
 
     mail(

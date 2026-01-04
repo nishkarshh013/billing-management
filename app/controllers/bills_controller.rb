@@ -27,7 +27,7 @@ class BillsController < ApplicationController
       @denominations = Denomination.all
       render :new, status: :unprocessable_entity
     end
-  end 
+  end
 
   def preview
     result = Billing::Calculator.new(
@@ -52,9 +52,8 @@ class BillsController < ApplicationController
     params.require(:bill).permit(
       :email,
       :paid_amount,
-      products: [:product_code, :quantity],
+      products: [ :product_code, :quantity ],
       denominations: {}
     )
   end
-
 end

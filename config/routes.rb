@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   # root "posts#index"
   root "bills#new"
 
-  resources :bills, expect: %i[destroy] do 
+  resources :bills, expect: %i[destroy] do
     collection do
       post :preview
       get :history

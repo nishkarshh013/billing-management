@@ -18,7 +18,7 @@ RSpec.describe Billing::Calculator, type: :service do
   let(:input) do
     {
       email: "test@gmail.com",
-      products: [{ product_code: "P001", quantity: 1 }],
+      products: [ { product_code: "P001", quantity: 1 } ],
       paid_amount: 60_000
     }
   end
@@ -76,7 +76,7 @@ RSpec.describe Billing::Calculator, type: :service do
     let(:input) do
       {
         email: "test@gmail.com",
-        products: [{ product_code: "P001", quantity: 1 }],
+        products: [ { product_code: "P001", quantity: 1 } ],
         paid_amount: 1_000
       }
     end
@@ -93,7 +93,7 @@ RSpec.describe Billing::Calculator, type: :service do
     let(:input) do
       {
         email: "test@gmail.com",
-        products: [{ product_code: "P001", quantity: 100 }],
+        products: [ { product_code: "P001", quantity: 100 } ],
         paid_amount: 60_000
       }
     end

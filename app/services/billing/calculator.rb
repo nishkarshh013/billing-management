@@ -93,7 +93,7 @@ class Billing::Calculator
       total_tax += tax
     end
 
-    [total_without_tax, total_tax]
+    [ total_without_tax, total_tax ]
   end
 
   def calculate_change(balance)
@@ -105,7 +105,7 @@ class Billing::Calculator
 
       denom_cents = d.value * 100
       needed = balance_cents / denom_cents
-      used = [needed, d.quantity].min
+      used = [ needed, d.quantity ].min
 
       next if used.zero?
 
@@ -202,5 +202,4 @@ class Billing::Calculator
       raise "Paid amount (₹#{paid_amount}) does not match cash denominations total (₹#{total_cash})"
     end
   end
-
 end
