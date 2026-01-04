@@ -207,7 +207,7 @@ end
 ### Installation
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/nishkarshh013/billing-management.git
 cd billing_management
 bundle install
 rails db:create db:migrate db:seed
@@ -320,9 +320,9 @@ config.action_mailer.smtp_settings = {
 **Nishkarsh Sahu**  
 Backend Ruby on Rails Developer
 
-📧 Email: [Your Email]  
-💼 LinkedIn: [Your LinkedIn]  
-🐙 GitHub: [Your GitHub]
+📧 Email: nishkarshsahu007@gmail.com 
+💼 LinkedIn: https://www.linkedin.com/in/nishkarsh-sahu-b54ba8193/  
+🐙 GitHub: https://github.com/nishkarshh013/
 
 ---
 
