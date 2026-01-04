@@ -1,6 +1,10 @@
 class BillsController < ApplicationController
   def index
-    @bills = Bill.all.order(created_at: :desc)
+    @bills = Bill.order(created_at: :desc)
+    respond_to do |format|
+      format.html # This must be present for your test to pass
+      format.json { render json: @bills }
+    end
   end
 
   def show
@@ -29,25 +33,15 @@ class BillsController < ApplicationController
     result = Billing::Calculator.new(
       billing_params.merge(preview: true)
     ).call
-
     render json: result
   end
 
-  def previous_purchases
-    customer = Customer.find_by(email: params[:email])
+  def history
+    @customer = Customer.find_by(email: params[:email])
+    if @customer
+      @bills = @customer.bills.order(created_at: :desc)
 
-    if customer
-      bills = customer.bills.order(created_at: :desc)
-
-      render json: bills.map { |b|
-        {
-          id: b.id,
-          created_at: b.created_at.strftime("%d %b %Y"),
-          net_amount: b.net_amount
-        }
-      }
-    else
-      render json: []
+      @bills = @customer ? @customer.bills.order(created_at: :desc) : []
     end
   end
 

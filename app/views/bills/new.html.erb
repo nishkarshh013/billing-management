@@ -1,3 +1,6 @@
+<%= render 'purchase_history'%>
+
+<hr>
 <div data-controller="billing">
 
   <%= form_with url: bills_path,
@@ -39,14 +42,16 @@
     <hr>
 
     <!-- ================= DENOMINATIONS ================= -->
-    <h3>Denominations</h3>
+    <h3>Denominations (Cash given by customer)</h3>
 
     <% @denominations.order(value: :desc).each do |d| %>
       ₹<%= d.value %>
       <input type="number"
              name="bill[denominations][<%= d.value %>]"
              value="0"
-             min="0"><br>
+             min="0"
+             <%# data-action="input->billing#validateCash" %>
+             ><br>
     <% end %>
 
     <hr>
@@ -56,7 +61,9 @@
     <input type="number"
            name="bill[paid_amount]"
            min="0"
-           required>
+           required
+           data-billing-target="paidAmount"
+           >
 
     <br><br>
 

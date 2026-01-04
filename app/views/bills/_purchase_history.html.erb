@@ -1,0 +1,18 @@
+<hr>
+
+<h3>View Previous Purchases</h3>
+
+<%= form_with url: history_bills_path,
+              method: :get,
+              local: true do %>
+
+  <label>Customer Email</label>
+  <input type="email"
+         name="email"
+         required>
+
+  <button type="submit">
+    Search Purchases
+  </button>
+
+<% end %>

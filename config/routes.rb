@@ -16,10 +16,10 @@ Rails.application.routes.draw do
   # root "posts#index"
   root "bills#new"
 
-  resources :bills do 
+  resources :bills, expect: %i[destroy] do 
     collection do
       post :preview
+      get :history
     end
   end
-  get "/customers/previous_purchases", to: "bills#previous_purchases"
 end

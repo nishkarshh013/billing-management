@@ -1,6 +1,8 @@
 <h3>Previous Purchases</h3>
-  <ul data-billing-target="previous">
-</ul>
+
+<%= link_to "View Previous Purchases",
+            history_bills_path(email: @bill.customer.email),
+            class: "button" %>
 
 <h2>Bill Details</h2>
 

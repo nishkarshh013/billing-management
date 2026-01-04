@@ -36,6 +36,7 @@ class Billing::Calculator
     raise "Insufficient payment" if paid_amount < net_amount
 
     change_amount = paid_amount - net_amount
+    validate_customer_cash!
     change_result = calculate_change(change_amount)
 
     bill = persist!(
@@ -59,13 +60,24 @@ class Billing::Calculator
   end
 
   def fetch_products
-    @input[:products].map do |item|
+    products = @input[:products]
+    return [] if products.blank?
+
+    products = products.values if products.is_a?(ActionController::Parameters)
+
+    products.filter_map do |item|
+      code = item[:product_code].presence
+      qty  = item[:quantity].to_i
+
+      next if code.blank? || qty <= 0
+
       {
-        product: Product.find_by!(product_code: item[:product_code]),
-        quantity: item[:quantity].to_i
+        product: Product.find_by!(product_code: code),
+        quantity: qty
       }
     end
   end
+
 
   def calculate_totals(items)
     total_without_tax = 0.0
@@ -110,7 +122,7 @@ class Billing::Calculator
   def persist!(items, total_without_tax, total_tax, net_amount, change_amount, change_denominations)
     ActiveRecord::Base.transaction do
       customer = Customer.find_or_create_by!(email: @input[:email])
-
+      apply_customer_cash! # to increment or decrement denomination given by customer acc.
       bill = Bill.create!(
         customer: customer,
         total_without_tax: total_without_tax,
@@ -165,4 +177,30 @@ class Billing::Calculator
       end
     end
   end
+
+  def apply_customer_cash!
+    return if @input[:denominations].blank?
+
+    @input[:denominations].each do |value, count|
+      count = count.to_i
+      next if count <= 0
+
+      denom = Denomination.find_by!(value: value.to_i)
+      denom.increment!(:quantity, count)
+    end
+  end
+
+  def validate_customer_cash!
+    return if @input[:denominations].blank?
+    denominations = @input[:denominations].to_unsafe_h
+
+    total_cash = denominations.sum do |value, count|
+      value.to_i * count.to_i
+    end
+
+    if total_cash != paid_amount
+      raise "Paid amount (₹#{paid_amount}) does not match cash denominations total (₹#{total_cash})"
+    end
+  end
+
 end

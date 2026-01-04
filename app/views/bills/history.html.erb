@@ -1,0 +1,32 @@
+<!-- app/views/bills/history.html.erb -->
+
+<h2>Purchase History</h2>
+<% if @bills.present? %>
+  <table border="1" cellpadding="6">
+    <thead>
+      <tr>
+        <th>Bill No</th>
+        <th>Date</th>
+        <th>Net Amount</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @bills.each do |bill| %>
+        <tr>
+          <td><%= bill.id %></td>
+          <td><%= bill.created_at.strftime("%d %b %Y") %></td>
+          <td>₹ <%= bill.net_amount %></td>
+          <td>
+            <%= link_to "View Items", bill_path(bill) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No purchases found for this email.</p>
+<% end %>
+
+<%= link_to "Back to Billing", new_bill_path %>
