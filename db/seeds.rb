@@ -33,7 +33,9 @@ puts "Seeding denominations..."
   { value: 500, quantity: 10 },
   { value: 100, quantity: 20 },
   { value: 50,  quantity: 30 },
-  { value: 20,  quantity: 50 }
+  { value: 20,  quantity: 50 },
+  { value: 10,  quantity: 50 }
+
 ].each do |d|
   Denomination.create!(d)
 end
