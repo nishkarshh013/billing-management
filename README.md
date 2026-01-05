@@ -25,6 +25,7 @@ A full-stack Billing Management System built with Ruby on Rails, designed to han
 - [Email Configuration](#-email-configuration)
 - [Design Decisions](#-design-decisions)
 - [Future Improvements](#-future-improvements)
+- [Assumptions & Business Rules](#-assumptions--business-rules)
 - [Author](#-author)
 
 ---
@@ -315,14 +316,61 @@ config.action_mailer.smtp_settings = {
 
 ---
 
+## 📋 Assumptions & Business Rules
+
+### 🔹 Assumption 1: Bill Summary Is Mandatory Before Payment
+
+**The system always shows a bill summary before payment is accepted.**
+
+**Reason:**
+
+Without a bill summary, the customer (and cashier) cannot know:
+- Total price without tax
+- Total tax payable
+- Final net amount to be paid
+
+**Implementation:**
+- A real-time **Bill Summary** (Subtotal, Tax, Net Total) is calculated and displayed before bill generation
+- The customer is **not allowed to proceed** blindly without knowing the payable amount
+- This mirrors **real-world billing/POS systems**
+
+---
+
+### 🔹 Assumption 2: Two Separate Cash Sources Are Maintained
+
+**The system assumes two different types of cash:**
+
+1. **Cash given by the customer** (for current transaction)
+2. **Cash already available with the shop owner** (system denominations)
+
+**Why this matters:**
+
+- Customer cash must first be **validated**
+- Change must be returned **only from available system denominations**, not magically generated
+
+**Flow:**
+
+```
+1. Customer enters denominations → validated against paid amount
+2. Customer cash is added to system cash inventory
+3. Change is calculated using existing system denominations
+4. If exact change is not possible:
+   → Partial change is returned
+   → Remaining unpaid balance is clearly shown
+```
+
+**This reflects real-world cash handling, not an idealized system.**
+
+---
+
 ## 👨‍💻 Author
 
 **Nishkarsh Sahu**  
 Backend Ruby on Rails Developer
 
-📧 Email: nishkarshsahu007@gmail.com 
-💼 LinkedIn: https://www.linkedin.com/in/nishkarsh-sahu-b54ba8193/  
-🐙 GitHub: https://github.com/nishkarshh013/
+📧 Email: nishkarshsahu007@gmail.com  
+💼 LinkedIn: [linkedin.com/in/nishkarsh-sahu-b54ba8193](https://www.linkedin.com/in/nishkarsh-sahu-b54ba8193/)  
+🐙 GitHub: [@nishkarshh013](https://github.com/nishkarshh013)
 
 ---
 
