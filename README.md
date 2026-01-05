@@ -1,9 +1,10 @@
+
 # 🧾 Billing Management System
 
 A full-stack Billing Management System built with Ruby on Rails, designed to handle real-world billing scenarios including **tax calculation**, **cash denomination handling**, **stock management**, and **customer purchase history tracking**.
 
-![Ruby](https://img.shields.io/badge/Ruby-3.x-red)
-![Rails](https://img.shields.io/badge/Rails-7.x-red)
+![Ruby](https://img.shields.io/badge/Ruby-3.4-red)
+![Rails](https://img.shields.io/badge/Rails-8.1-red)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
 ![Sidekiq](https://img.shields.io/badge/Sidekiq-Background_Jobs-orange)
 ![Stimulus](https://img.shields.io/badge/Stimulus-Frontend-green)
@@ -129,8 +130,8 @@ Bill Created → Sidekiq Job → Email Sent
 
 | Technology | Purpose |
 |------------|---------|
-| **Ruby 3.x** | Language |
-| **Rails 7.x** | Framework |
+| **Ruby 3.4** | Language |
+| **Rails 8.1** | Framework |
 | **PostgreSQL** | Database |
 | **Stimulus** | Frontend interactivity |
 | **Sidekiq** | Background jobs |
@@ -200,8 +201,8 @@ end
 
 ### Prerequisites
 
-- Ruby 3.x
-- Rails 7.x
+- Ruby 3.4
+- Rails 8.1
 - PostgreSQL
 - Redis
 
